@@ -1,2 +1,2 @@
 top of screen runs in a track
-middle of screen fits to a brackt which is anchored to the bottom
+middle of screen fits to a bracket which is anchored to the bottom

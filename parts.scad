@@ -24,14 +24,10 @@ module base(){
     partHeight = screenHeight+rotArmDepth;
     difference(){
     cube([supportWidth,standardDepth,partHeight]);
-    //slot for support arm
-    // this should be on the outside (towards the frame)
-    cube([rotArmWidth+clearence,rotArmDepth,rotArmLength+clearence*4]);
-    translate([rotArmWidth+clearence,standardDepth/2,rotArmDepth/2]) rotate([0,-90,0]) pinMate();
+	//interface to rot arm
+    translate([supportWidth,standardDepth/2,rotArmDepth/2]) rotate([0,90,0]) pinMate();
     //track, simple pin
-    translate([supportWidth-trackDepth,standardDepth/2-trackWidth/2,0]) cube([trackDepth,trackWidth,partHeight]);
-    //notch
-    translate([rotArmWidth+clearence,0,partHeight/2-notchHeight/2]) cube([supportWidth,standardDepth*3/4,notchHeight]);
+    translate([supportWidth-trackDepth,standardDepth/2-trackWidth/2,rotArmDepth]) cube([trackDepth,trackWidth,screenHeight]);
     }
     
     
@@ -46,45 +42,45 @@ module arm(){
             translate([rotArmPivotSep,0,0]) cylinder(h=rotArmWidth,d=rotArmDepth);
         }
         
-        translate([0,0,rotArmWidth]) pinClearence();
+        translate([0,0,0]) rotate([0,-180,0]) pinClearence();
         translate([rotArmPivotSep,0,rotArmWidth]) pinClearence();
     }
 }
 
 module slidingComponent(){
-    PartDepth = 10;
-    translate([supportWidth+PartDepth+clearence,standardDepth/2,rotArmDepth/2]) rotate([0,-90,0]){
+    PartDepth = 10-rotArmWidth;
+    translate([supportWidth+PartDepth+rotArmWidth+clearence*2,standardDepth/2,rotArmDepth/2]) rotate([0,-90,0]){
     //for now this is a place holder, on something proper this would be a singel part fo the screen
-    hull(){
-        cylinder(d=standardDepth,h=PartDepth);
-        translate([screenHeight,0,0]) cylinder(d=standardDepth,h=PartDepth);
-    }
-    //slidePin
-    translate([screenHeight,0,0]) cylinder(d=trackWidth-clearence, h = trackDepth+PartDepth);
-    //Pivot Mount
-    mountHeight = supportWidth-rotArmWidth+PartDepth;
-    difference(){
-        translate([screenHeight/2,0,0]) cylinder(d=notchHeight-clearence*2, h = mountHeight);
-        translate([screenHeight/2,0,mountHeight]) pinMate();
-    }
+	difference(){
+		hull(){
+			cylinder(d=standardDepth,h=PartDepth);
+			translate([screenHeight,0,0]) cylinder(d=standardDepth,h=PartDepth);
+		}
+        translate([screenHeight/2,0,PartDepth]) pinMate();
+	}
+    //slidePin, two parts, wide sliding, narrow into slot
+    translate([screenHeight,0,0]) {
+		cylinder(d=trackWidth-clearence, h = trackDepth+PartDepth+rotArmWidth);
+		cylinder(d=standardDepth,h=PartDepth+rotArmWidth);
+	}
     }
 }
 
 module assembly(){
 base();
-color("green") arm();
+color("green") translate([supportWidth + clearence ,0,0]) arm();
 color("blue") slidingComponent();
-color("red") translate([0,standardDepth/2+clearence,rotArmDepth/2]) rotate([0,-90,0]) pin();
-color("red") translate([0,standardDepth/2+clearence,rotArmDepth/2+rotArmPivotSep])rotate([0,-90,0]) pin();
+color("red") translate([supportWidth+clearence+rotArmWidth,standardDepth/2+clearence ,rotArmDepth/2]) rotate([0,90,0]) pin();
+color("red") translate([supportWidth + clearence,standardDepth/2+clearence,rotArmDepth/2+rotArmPivotSep])rotate([0,-90,0]) pin();
 
 }
 
 module exploded(){
-translate([20,0,0])base();
-translate([10,0,0]) color("green") arm();
-translate([30,0,0])color("blue") slidingComponent();
-color("red") translate([0,standardDepth/2+clearence,rotArmDepth/2]) rotate([0,-90,0]) pin();
-color("red") translate([0,standardDepth/2+clearence,rotArmDepth/2+rotArmPivotSep])rotate([0,-90,0]) pin();
+base();
+translate([40,0,0]) color("green") arm();
+translate([45,0,0])color("blue") slidingComponent();
+translate([25,0,0]) color("red") translate([0,standardDepth/2+clearence,rotArmDepth/2+rotArmPivotSep])rotate([0,-90,0]) pin();
+translate([60,0,0]) color("red") translate([0,standardDepth/2+clearence,rotArmDepth/2]) rotate([0,90,0]) pin();
 }
 
 //assembly();
