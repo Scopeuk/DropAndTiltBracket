@@ -1,18 +1,18 @@
 # Drop and tilt bracket
-This is a quick and basic openscad model, it's small and relatively quick to print. All parts are printed.
-The arm will rotate from vertical to near horizonal with the top of the bracket remaining inline with the track.
-The bracket can rotate in either direction.
+This is a quick and basic openscad model, it's small and relatively quick to print. All parts are printed.  
+The arm will rotate from vertical to near horizonal with the top of the bracket remaining inline with the track.  
+The bracket can rotate in either direction.  
 
 ## Exploded Diagram
 ![Exploded diagram](/Images/exploded.png)
 
 ## Printing
 All parts in the diagram should be printed once.
-This should give you 
-two pins (red)
-one rotating arm (green)
-one sliding arm (blue)
-one support (yellow)
+This should give you:  
+two pins (red)  
+one rotating arm (green)  
+one sliding arm (blue)  
+one support (yellow)  
 
 
 ## Assembly instructions
